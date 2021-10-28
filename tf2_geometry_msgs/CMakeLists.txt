@@ -27,6 +27,11 @@ ament_auto_find_build_dependencies(REQUIRED ${required_dependencies})
 #    DESTINATION lib/${PROJECT_NAME}
 # )
 
+add_library(${PROJECT_NAME} INTERFACE)
+target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:include>)
+target_link_libraries(${PROJECT_NAME} INTERFACE orocos-kdl)
+ament_target_dependencies(${PROJECT_NAME} INTERFACE ${required_dependencies})
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
 
@@ -44,7 +49,7 @@ if(BUILD_TESTING)
   if(TARGET test_tf2_geometry_msgs)
     target_include_directories(test_tf2_geometry_msgs PUBLIC include)
     target_link_libraries(test_tf2_geometry_msgs
-      orocos-kdl
+      ${PROJECT_NAME}
     )
     ament_target_dependencies(test_tf2_geometry_msgs
       "geometry_msgs"
@@ -54,11 +59,6 @@ if(BUILD_TESTING)
     )
   endif()
 endif()
-
-add_library(${PROJECT_NAME} INTERFACE)
-target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:include>)
-target_link_libraries(${PROJECT_NAME} INTERFACE orocos-kdl)
-ament_target_dependencies(${PROJECT_NAME} INTERFACE ${required_dependencies})
 
 install(
   TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
