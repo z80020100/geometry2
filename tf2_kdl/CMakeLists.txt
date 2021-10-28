@@ -37,10 +37,13 @@ if(BUILD_TESTING)
   ament_add_gtest(test_kdl test/test_tf2_kdl.cpp)
   target_include_directories(test_kdl PUBLIC
     include
+    ${orocos_kdl_INCLUDE_DIRS}
+  )
+  target_link_libraries(test_kdl
+    orocos-kdl
   )
   ament_target_dependencies(test_kdl
     builtin_interfaces
-    orocos_kdl
     rclcpp
     tf2
     tf2_ros

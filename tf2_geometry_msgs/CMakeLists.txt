@@ -43,9 +43,11 @@ if(BUILD_TESTING)
   ament_add_gtest(test_tf2_geometry_msgs test/test_tf2_geometry_msgs.cpp)
   if(TARGET test_tf2_geometry_msgs)
     target_include_directories(test_tf2_geometry_msgs PUBLIC include)
+    target_link_libraries(test_tf2_geometry_msgs
+      orocos-kdl
+    )
     ament_target_dependencies(test_tf2_geometry_msgs
       "geometry_msgs"
-      "orocos_kdl"
       "rclcpp"
       "tf2"
       "tf2_ros"
@@ -55,6 +57,7 @@ endif()
 
 add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:include>)
+target_link_libraries(${PROJECT_NAME} INTERFACE orocos-kdl)
 ament_target_dependencies(${PROJECT_NAME} INTERFACE ${required_dependencies})
 
 install(
